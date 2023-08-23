@@ -8,7 +8,7 @@ const usersRouter = express.Router()
 
 
 usersRouter.post("/signup", signup)
-usersRouter.post("/login", login)
+usersRouter.get("/login", login)
 
 
 module.exports = usersRouter
