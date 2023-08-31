@@ -1,6 +1,7 @@
 const joi = require("joi");
 const Users = require("../model/users");
 const bcrypt = require("bcrypt");
+const { createToken } = require("../utils/createToken");
 
 
 const login = async(req, res) => {
@@ -34,17 +35,7 @@ const validatePassword = await bcrypt.compare(
         responseMessage: "Invalid email or password",
         data: null,
       });
-      // if(!user.isVerified) return res.send({
-      //   responseCode: "96",
-      //   responseMessage: "Kindly verify your account to proceed",
-      //   data: {
-      //     _id: user._id,
-      //     email: user.email,
-      //     username: user.username,
-      //     isVerified: user.isVerified,
-      //     dateCreated: user.dateCreated,
-      //   },
-      // });
+   
       res.status(200).send({
         responseCode: "00",
         responseMessage: "Login successful",
@@ -54,7 +45,18 @@ const validatePassword = await bcrypt.compare(
         lastName: user.lastName,
         email: user.email,
       }
-      
+    });
+        const token = createToken(user);
+
+        res.status(200).send({
+        responseCode: "00",
+        responseMessage: "Login successful",
+        data: {
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+      }
     })
         
 } catch (error) {
